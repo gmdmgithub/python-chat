@@ -83,6 +83,9 @@
                     '</b> ' + msg.message + '</div>')
             }
         })
+        socket.on('server_connection', msg => {
+            console.log(msg)
+        })
     </script>
 </body>
 

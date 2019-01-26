@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from utils import util
 from config import Config
 import json
@@ -30,17 +30,24 @@ def messageRecived():
 
 @socketio.on("connect")
 def test_connect():
-    emit("my response", {"data": "Connected"})
+    print(
+        "my response - client connection",
+        {"data": "Connected", "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")},
+    )
+    emit(
+        "server_connection",
+        {"data": "Connected", "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")},
+    )
 
 
 @socketio.on("disconnect")
 def test_disconnect():
-    print("Client disconnected")
+    print("Client disconnected", datetime.utcnow())
 
 
 @socketio.on("chat_message")
 def my_def_message(jsonmessage):
-    print("recived my event: " + str(jsonmessage))
+    print("session ID", request.sid)
     jsonmessage["mess_date"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     socketio.emit("my_response", jsonmessage, callback=messageRecived)
 
