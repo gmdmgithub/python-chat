@@ -1,10 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response, session
 from utils import util
 from config import Config
 import json
 from datetime import datetime
 
 from flask_socketio import SocketIO, emit  # emits data
+
+
+# class flask.Flask(import_name, static_url_path=None, static_folder='static',
+# static_host=None, host_matching=False, subdomain_matching=False,
+# template_folder='templates', instance_path=None, instance_relative_config=False, root_path=None)
 
 
 app = Flask(__name__)
@@ -16,12 +21,30 @@ app.config.from_object(Config)
 socketio = SocketIO(app)
 
 
+@app.route("/logout")
+def logout():
+    # remove the username from the session if it is there
+    session.pop("username", None)
+    return redirect(url_for("index"))
+
+
 @app.route("/")
 def index():
     # return 'hello from sockets!'
-    return render_template(
-        "./chatPage.html", name="Greg", port_no=util.getEnvVal("PORT")
+    # lets use make_response to add values
+    resp = make_response(
+        render_template("./chatPage.html", name="Greg", port_no=util.getEnvVal("PORT"))
     )
+    resp.set_cookie("room_id", "3234")
+    room_id = request.cookies.get("room_id")
+    if "MY_ROOM" in session:
+        session_room_id = session["MY_ROOM"]
+        print("My room exists", session_room_id)
+    else:
+        session["MY_ROOM"] = room_id
+        print("I am setting session id", session_room_id)
+
+    return resp
 
 
 def messageRecived():
