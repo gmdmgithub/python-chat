@@ -42,7 +42,7 @@ def index():
         print("My room exists", session_room_id)
     else:
         session["MY_ROOM"] = room_id
-        print("I am setting session id", session_room_id)
+        print("I am setting session id", room_id)
 
     return resp
 

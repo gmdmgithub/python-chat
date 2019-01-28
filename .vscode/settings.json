@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\NBMIKA\\.virtualenvs\\simple-chat-SkMn20vu\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\NBMIKA\\.virtualenvs\\simple-chat-SkMn20vu\\Scripts\\python.exe",
+    "python.formatting.provider": "black"
 }
