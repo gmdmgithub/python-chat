@@ -1,7 +1,7 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port)
 // broadcast a message
 socket.on('connect', function () {
-    socket.emit('my event', {
+    socket.emit('init_conn', {
         data: 'User Connected'
     })
 

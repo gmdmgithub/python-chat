@@ -68,6 +68,14 @@ def test_disconnect():
     print("Client disconnected", datetime.utcnow())
 
 
+@socketio.on("init_conn")
+def new_connection(msg):
+    print(
+        f"New connection from client {msg}",
+        datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+
+
 @socketio.on("chat_message")
 def my_def_message(jsonmessage):
     print("session ID", request.sid)
